@@ -1,5 +1,7 @@
 package com.frx.libnetwork;
 
+import com.elvishew.xlog.XLog;
+
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
@@ -72,16 +74,18 @@ public class ApiService {
     public static void init(String baseUrl, Convert convert) {
         sBaseUrl = baseUrl;
         if (convert == null) {
-            sConvert = new JsonConvert();
+            convert = new JsonConvert();
         }
         sConvert = convert;
     }
 
     public static <T> GetRequest<T> get(String url) {
+        XLog.i("get=>" + sBaseUrl + url);
         return new GetRequest<>(sBaseUrl + url);
     }
 
     public static <T> PostRequest<T> post(String url) {
+        XLog.i("post=>" + sBaseUrl + url);
         return new PostRequest<>(sBaseUrl + url);
     }
 }

@@ -22,7 +22,7 @@ import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
 
-public abstract class Request<T, R extends Request> {
+public abstract class Request<T, R extends Request> implements Cloneable {
 
     protected String mUrl;
     protected HashMap<String, String> mHeaders = new HashMap<>();
@@ -58,11 +58,19 @@ public abstract class Request<T, R extends Request> {
     }
 
     public R addParams(String key, Object value) {
+        if (value == null) {
+            return (R) this;
+        }
+
         try {
-            Field type = value.getClass().getField("TYPE");
-            Class claz = (Class) type.get(null);
-            if (claz.isPrimitive()) {
+            if (value.getClass() == String.class) {
                 mParams.put(key, value);
+            } else {
+                Field type = value.getClass().getField("TYPE");
+                Class claz = (Class) type.get(null);
+                if (claz.isPrimitive()) {
+                    mParams.put(key, value);
+                }
             }
         } catch (NoSuchFieldException | IllegalAccessException e) {
             e.printStackTrace();
@@ -90,13 +98,14 @@ public abstract class Request<T, R extends Request> {
         addHeaders(builder);
         //构造request body
         okhttp3.Request request = generateRequest(builder);
-        return ApiService.sOkHttpClient.newCall(request);
+        Call call = ApiService.sOkHttpClient.newCall(request);
+        return call;
     }
 
     /**
      * 异步调用
      *
-     * @param callback
+     * @param callback JsonCallback<T>
      */
     @SuppressLint("RestrictedApi")
     public void execute(final JsonCallback callback) {
@@ -138,10 +147,10 @@ public abstract class Request<T, R extends Request> {
      */
     @SuppressLint("RestrictedApi")
     public ApiResponse<T> execute() {
-        if (mType == null && mClaz == null) {
+        if (mType == null) {
             throw new RuntimeException("同步调用时，response的返回值类型必须设置");
         }
-        if (mCacheStrategy != NET_ONLY) {
+        if (mCacheStrategy == NET_ONLY) {
             //获取缓存
             return readCache(generateCacheKey(mUrl, mParams));
         }

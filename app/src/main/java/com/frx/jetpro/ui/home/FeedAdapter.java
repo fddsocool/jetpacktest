@@ -78,7 +78,7 @@ public class FeedAdapter extends PagedListAdapter<Feed, FeedAdapter.FeedViewHold
         holder.bindData(item, mCategory);
     }
 
-    public static class FeedViewHolder extends RecyclerView.ViewHolder {
+    public class FeedViewHolder extends RecyclerView.ViewHolder {
 
         @NonNull
         private final ViewDataBinding mBinding;
@@ -94,7 +94,7 @@ public class FeedAdapter extends PagedListAdapter<Feed, FeedAdapter.FeedViewHold
                 imageBinding.setFeed(item);
                 imageBinding.feedImage.bindData(item.width, item.height, 16,
                         item.cover);
-            } else {
+            } else if (mBinding instanceof LayoutFeedTypeVideoBinding) {
                 LayoutFeedTypeVideoBinding videoBinding = (LayoutFeedTypeVideoBinding) mBinding;
                 videoBinding.setFeed(item);
                 videoBinding.listPlayerView.bindData(category, item.width, item.height,

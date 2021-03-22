@@ -31,7 +31,9 @@ public abstract class AbsViewModel<T> extends ViewModel {
         @NonNull
         @Override
         public DataSource<Integer, T> create() {
-            mDataSource = createDataSource();
+            if (mDataSource == null || mDataSource.isInvalid()) {
+                mDataSource = createDataSource();
+            }
             return mDataSource;
         }
     };
@@ -62,7 +64,7 @@ public abstract class AbsViewModel<T> extends ViewModel {
         return mPageData;
     }
 
-    public MutableLiveData<Boolean> getBoundaryPageData() {
+    public LiveData<Boolean> getBoundaryPageData() {
         return mBoundaryPageData;
     }
 

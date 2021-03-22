@@ -3,6 +3,7 @@ package com.frx.jetpro.ui.home;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.MutableLiveData;
 import androidx.paging.DataSource;
 import androidx.paging.ItemKeyedDataSource;
 
@@ -24,7 +25,7 @@ public class HomeViewModel extends AbsViewModel<Feed> {
 
     @Override
     public DataSource<Integer, Feed> createDataSource() {
-        return null;
+        return mDataSource;
     }
 
     ItemKeyedDataSource<Integer, Feed> mDataSource = new ItemKeyedDataSource<Integer, Feed>() {
@@ -56,8 +57,10 @@ public class HomeViewModel extends AbsViewModel<Feed> {
         }
     };
 
-    private void loadData(int key, int requestedLoadSize, ItemKeyedDataSource.LoadCallback<Feed> callback) {
-        Request request = ApiService.get("/feeds/queryHotFeedsList")
+    private void loadData(int key, int requestedLoadSize,
+                          ItemKeyedDataSource.LoadCallback<Feed> callback) {
+        Request request = ApiService
+                .get("/feeds/queryHotFeedsList")
                 .addParams("feedType", null)
                 .addParams("userId", 0)
                 .addParams("feedId", key)
@@ -67,25 +70,27 @@ public class HomeViewModel extends AbsViewModel<Feed> {
 
         if (witchCache) {
             request.setCacheStrategy(Request.CACHE_ONLY);
-            request.execute(new JsonCallback<ArrayList<Feed>>() {
+            request.execute(new JsonCallback<List<Feed>>() {
                 @Override
-                public void onCacheSuccess(ApiResponse<ArrayList<Feed>> response) {
+                public void onCacheSuccess(ApiResponse<List<Feed>> response) {
                     Log.e("loadData", "onCacheSuccess: ");
-
                 }
             });
         }
 
         //如果获取过缓存则需要clone之前的request
         try {
+            witchCache = false;
             Request netRequest = witchCache ? request.clone() : request;
             netRequest.setCacheStrategy(key == 0 ? Request.NET_CACHE : Request.NET_ONLY);
             ApiResponse<List<Feed>> response = netRequest.execute();
             List<Feed> data = response.body == null ? Collections.emptyList() : response.body;
+
             callback.onResult(data);
 
-            if (key ==0){
-
+            if (key > 0) {
+                //通过BoundaryPageData发送数据 告诉UI层 是否应该主动关闭上拉加载分页的动画
+                ((MutableLiveData) getBoundaryPageData()).postValue(data.size() > 0);
             }
 
         } catch (CloneNotSupportedException e) {

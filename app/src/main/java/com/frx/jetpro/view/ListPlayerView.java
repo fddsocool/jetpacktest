@@ -25,11 +25,11 @@ public class ListPlayerView extends FrameLayout {
     private String mVideoUrl;
 
     public ListPlayerView(@NonNull Context context) {
-        super(context);
+        this(context, null);
     }
 
     public ListPlayerView(@NonNull Context context, @Nullable AttributeSet attrs) {
-        super(context, attrs);
+        this(context, attrs, 0);
     }
 
     public ListPlayerView(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
@@ -49,7 +49,7 @@ public class ListPlayerView extends FrameLayout {
     public void bindData(String category, int widthPx, int heightPx, String coverUrl, String videoUrl) {
         mCategory = category;
         mVideoUrl = videoUrl;
-        cover.setImageURI(cover, coverUrl, false);
+        cover.setImageUrl(coverUrl);
 
         //高斯模糊 如果该视频的宽度小于高度，则高斯模糊背景图显示出来
         if (widthPx < heightPx) {

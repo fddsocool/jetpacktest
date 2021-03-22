@@ -3,7 +3,6 @@ package com.frx.jetpro.view;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.ViewGroup;
@@ -19,10 +18,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.request.target.CustomTarget;
-import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
-import com.elvishew.xlog.Logger;
-import com.elvishew.xlog.XLog;
 import com.frx.libcommon.utils.PixUtils;
 
 import jp.wasabeef.glide.transformations.BlurTransformation;
@@ -44,9 +40,20 @@ public class PPImageView extends AppCompatImageView {
         super(context, attrs, defStyleAttr);
     }
 
+    public void setImageUrl(String imageUrl) {
+        setImageUrl(this, imageUrl, false);
+    }
+
+    /**
+     * BindingAdapter 的方法必须是 static 方法
+     *
+     * @param imageView
+     * @param imageUrl
+     * @param isCircle
+     */
     @SuppressLint("CheckResult")
     @BindingAdapter(value = {"image_url", "isCircle"})
-    public void setImageURI(PPImageView imageView, String imageUrl, boolean isCircle) {
+    public static void setImageUrl(PPImageView imageView, String imageUrl, boolean isCircle) {
         RequestBuilder<Drawable> builder = Glide.with(imageView).load(imageUrl);
         if (isCircle) {
             builder.transform(new CircleCrop());
@@ -96,7 +103,7 @@ public class PPImageView extends AppCompatImageView {
         }
 
         setSize(widthPx, heightPx, marginLeft, maxWidth, maxHeight);
-        setImageURI(this, imageUrl, false);
+        setImageUrl(this, imageUrl, false);
     }
 
     private void setSize(int width, int height, int marginLeft, int maxWidth, int maxHeight) {

@@ -9,10 +9,6 @@
             name="feed"
             type="Feed" />
 
-        <variable
-            name="lifeCycleOwner"
-            type="androidx.lifecycle.LifecycleOwner" />
-
         <import type="com.frx.jetpro.model.Feed" />
 
         <import type="com.frx.jetpro.utils.StringConvert" />

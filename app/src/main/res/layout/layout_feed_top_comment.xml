@@ -9,10 +9,6 @@
             name="comment"
             type="com.frx.jetpro.model.Comment" />
 
-        <variable
-            name="lifeCycleOwner"
-            type="androidx.lifecycle.LifecycleOwner" />
-
         <import type="android.text.TextUtils" />
 
         <import type="android.view.View" />
