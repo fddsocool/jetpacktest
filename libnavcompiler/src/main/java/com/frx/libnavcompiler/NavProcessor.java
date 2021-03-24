@@ -116,7 +116,8 @@ public class NavProcessor extends AbstractProcessor {
         return true;
     }
 
-    private void handleDestination(Set<? extends Element> elements, Class<? extends Annotation> annotationClaz, HashMap<String, JSONObject> destMap) {
+    private void handleDestination(Set<? extends Element> elements, Class<? extends Annotation> annotationClaz,
+                                   HashMap<String, JSONObject> destMap) {
         for (Element element : elements) {
             TypeElement typeElement = (TypeElement) element;
             //得到全类名

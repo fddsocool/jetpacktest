@@ -12,16 +12,17 @@ public abstract class AbsViewModel<T> extends ViewModel {
     private DataSource<Integer, T> mDataSource;
     private final LiveData<PagedList<T>> mPageData;
     private final MutableLiveData<Boolean> mBoundaryPageData = new MutableLiveData<>();
+    protected final PagedList.Config mConfig;
 
     public AbsViewModel() {
-        PagedList.Config config = new PagedList.Config.Builder()
+        mConfig = new PagedList.Config.Builder()
                 //分页量
                 .setPageSize(10)
                 //初始加载量
                 .setInitialLoadSizeHint(12)
                 .build();
 
-        mPageData = new LivePagedListBuilder<>(mFactory, config)
+        mPageData = new LivePagedListBuilder<>(mFactory, mConfig)
                 .setInitialLoadKey(0)
                 .setBoundaryCallback(boundaryCallback)
                 .build();

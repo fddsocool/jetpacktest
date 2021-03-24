@@ -14,8 +14,12 @@ import android.text.style.StyleSpan;
 public class StringConvert {
 
     public static String convertFeedUgc(int count) {
-        if (count < 10000) {
+        if (count <= 999) {
             return String.valueOf(count);
+        }
+
+        if (count < 10000) {
+            return count / 1000 + "千";
         }
 
         return count / 10000 + "万";

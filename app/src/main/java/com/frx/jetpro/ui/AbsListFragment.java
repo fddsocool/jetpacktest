@@ -30,13 +30,13 @@ import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
-public abstract class AbsListFragment<T, M extends AbsViewModel<T>> extends Fragment implements OnRefreshListener, OnLoadMoreListener {
+public abstract class AbsListFragment<T, M extends AbsViewModel<T>, VH extends RecyclerView.ViewHolder> extends Fragment implements OnRefreshListener, OnLoadMoreListener {
 
     protected LayoutRefreshViewBinding mBinding;
     protected RecyclerView mRecyclerView;
     protected SmartRefreshLayout mRefreshLayout;
     protected EmptyView mEmptyView;
-    protected PagedListAdapter mAdapter;
+    protected PagedListAdapter<T, VH> mAdapter;
     protected M mViewModel;
     private DividerItemDecoration mItemDecoration;
 
@@ -77,14 +77,6 @@ public abstract class AbsListFragment<T, M extends AbsViewModel<T>> extends Frag
         ParameterizedType type = (ParameterizedType) getClass().getGenericSuperclass();
         Type[] arguments = type.getActualTypeArguments();
 
-        for (Type argument : arguments) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                XLog.i(argument.getTypeName());
-            } else {
-                XLog.i(argument.toString());
-            }
-        }
-
         if (arguments.length > 1) {
             Type argument = arguments[1];
             Class modelClaz = ((Class) argument).asSubclass(AbsViewModel.class);
@@ -115,7 +107,7 @@ public abstract class AbsListFragment<T, M extends AbsViewModel<T>> extends Frag
 
     protected abstract void afterViewCreated();
 
-    public abstract PagedListAdapter getAdapter();
+    public abstract PagedListAdapter<T, VH> getAdapter();
 
     public void submitList(PagedList<T> result) {
         //只有当新数据集合大于0的时候，才调用adapter.submitList

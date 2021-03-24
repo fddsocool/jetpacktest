@@ -78,7 +78,7 @@ public class FeedAdapter extends PagedListAdapter<Feed, FeedAdapter.FeedViewHold
         holder.bindData(item, mCategory);
     }
 
-    public class FeedViewHolder extends RecyclerView.ViewHolder {
+    public static class FeedViewHolder extends RecyclerView.ViewHolder {
 
         @NonNull
         private final ViewDataBinding mBinding;
