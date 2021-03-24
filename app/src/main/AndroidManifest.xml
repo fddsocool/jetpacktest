@@ -28,6 +28,8 @@
 
         <activity android:name=".ui.publish.PublishActivity" />
 
+        <activity android:name=".ui.login.LoginActivity" />
+
     </application>
 
 </manifest>
