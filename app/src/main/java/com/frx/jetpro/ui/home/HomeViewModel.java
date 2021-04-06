@@ -11,7 +11,6 @@ import androidx.paging.ItemKeyedDataSource;
 import androidx.paging.PagedList;
 
 import com.alibaba.fastjson.TypeReference;
-import com.elvishew.xlog.XLog;
 import com.frx.jetpro.model.Feed;
 import com.frx.jetpro.ui.AbsViewModel;
 import com.frx.jetpro.ui.MutableDataSource;
@@ -53,7 +52,8 @@ public class HomeViewModel extends AbsViewModel<Feed> {
 
     class FeedDataSource extends ItemKeyedDataSource<Integer, Feed> {
         @Override
-        public void loadInitial(@NonNull LoadInitialParams<Integer> params, @NonNull LoadInitialCallback<Feed> callback) {
+        public void loadInitial(@NonNull LoadInitialParams<Integer> params,
+                                @NonNull LoadInitialCallback<Feed> callback) {
             //加载初始化数据的
             loadData(0, params.requestedLoadSize, callback);
             witchCache = false;
@@ -79,22 +79,16 @@ public class HomeViewModel extends AbsViewModel<Feed> {
         }
     }
 
-    private void loadData(int key, int requestedLoadSize,
-                          ItemKeyedDataSource.LoadCallback<Feed> callback) {
+    private void loadData(int key, int requestedLoadSize, ItemKeyedDataSource.LoadCallback<Feed> callback) {
 
         if (key > 0) {
             //如果key>0，表示此次加载是分页加载
             mLoadAfter.set(true);
         }
 
-        Request request = ApiService
-                .get("/feeds/queryHotFeedsList")
-                .addParams("feedType", null)
-                .addParams("userId", 0)
-                .addParams("feedId", key)
-                .addParams("pageCount", requestedLoadSize)
-                .responseType(new TypeReference<ArrayList<Feed>>() {
-                }.getType());
+        Request request = ApiService.get("/feeds/queryHotFeedsList").addParam("feedType", null).addParam("userId", 0)
+                                    .addParam("feedId", key).addParam("pageCount", requestedLoadSize).responseType(
+                        new TypeReference<ArrayList<Feed>>() {}.getType());
 
         if (witchCache) {
             request.setCacheStrategy(Request.CACHE_ONLY);
@@ -105,7 +99,9 @@ public class HomeViewModel extends AbsViewModel<Feed> {
                     //此处需要把List类型的对象转换为PagingList类型对象
                     List<Feed> body = response.body;
                     MutableDataSource<Integer, Feed> dataSource = new MutableDataSource<>();
-                    dataSource.data.addAll(body == null ? Collections.emptyList() : body);
+                    dataSource.data.addAll(body == null
+                                           ? Collections.emptyList()
+                                           : body);
                     PagedList<Feed> pagedList = dataSource.buildNewPagedList(mConfig);
                     //在子线程中用postValue
                     mCacheLiveData.postValue(pagedList);
@@ -115,10 +111,16 @@ public class HomeViewModel extends AbsViewModel<Feed> {
 
         //如果获取过缓存则需要clone之前的request
         try {
-            Request netRequest = witchCache ? request.clone() : request;
-            netRequest.setCacheStrategy(key == 0 ? Request.NET_CACHE : Request.NET_ONLY);
+            Request netRequest = witchCache
+                                 ? request.clone()
+                                 : request;
+            netRequest.setCacheStrategy(key == 0
+                                        ? Request.NET_CACHE
+                                        : Request.NET_ONLY);
             ApiResponse<List<Feed>> response = netRequest.execute();
-            List<Feed> data = response.body == null ? Collections.emptyList() : response.body;
+            List<Feed> data = response.body == null
+                              ? Collections.emptyList()
+                              : response.body;
 
             callback.onResult(data);
 

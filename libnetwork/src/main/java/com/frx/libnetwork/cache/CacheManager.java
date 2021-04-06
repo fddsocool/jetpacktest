@@ -11,14 +11,19 @@ public class CacheManager {
         Cache cache = new Cache();
         cache.key = key;
         cache.data = toByteArray(body);
-
-        //写入
         CacheDatabase.get().getDao().saveCache(cache);
     }
 
     public static Object getCache(String Key) {
         Cache cache = CacheDatabase.get().getDao().getCache(Key);
         return toObject(cache);
+    }
+
+    public static <T> void delete(String key, T body) {
+        Cache cache = new Cache();
+        cache.key = key;
+        cache.data = toByteArray(body);
+        CacheDatabase.get().getDao().delete(cache);
     }
 
     private static Object toObject(Cache cache) {

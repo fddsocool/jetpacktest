@@ -1,10 +1,13 @@
 package com.frx.jetpro.model;
 
 import androidx.annotation.Nullable;
+import androidx.databinding.BaseObservable;
+import androidx.databinding.Bindable;
+import androidx.databinding.library.baseAdapters.BR;
 
 import java.io.Serializable;
 
-public class Ugc implements Serializable {
+public class Ugc extends BaseObservable implements Serializable {
     /**
      * likeCount : 153
      * shareCount : 0
@@ -21,13 +24,15 @@ public class Ugc implements Serializable {
     public boolean hasFavorite;
     public boolean hasdiss;
 
+    @Bindable
     public boolean isHasdiss() {
         return hasdiss;
     }
 
     public void setHasdiss(boolean hasdiss) {
-        if (this.hasdiss == hasdiss)
+        if (this.hasdiss == hasdiss) {
             return;
+        }
         if (hasdiss) {
             setHasLiked(false);
         }
@@ -36,6 +41,7 @@ public class Ugc implements Serializable {
 
     public boolean hasLiked;
 
+    @Bindable
     public boolean isHasLiked() {
         return hasLiked;
     }
@@ -50,8 +56,18 @@ public class Ugc implements Serializable {
             likeCount = likeCount - 1;
         }
         this.hasLiked = hasLiked;
+        notifyPropertyChanged(BR._all);
     }
 
+    @Bindable
+    public boolean isHasFavorite() {
+        return hasFavorite;
+    }
+
+    public void setHasFavorite(boolean hasFavorite) {
+        this.hasFavorite = hasFavorite;
+        notifyPropertyChanged(BR._all);
+    }
 
     @Override
     public boolean equals(@Nullable Object obj) {
@@ -64,13 +80,5 @@ public class Ugc implements Serializable {
                 && hasFavorite == newUgc.hasFavorite
                 && hasLiked == newUgc.hasLiked
                 && hasdiss == newUgc.hasdiss;
-    }
-
-    public boolean isHasFavorite() {
-        return hasFavorite;
-    }
-
-    public void setHasFavorite(boolean hasFavorite) {
-        this.hasFavorite = hasFavorite;
     }
 }

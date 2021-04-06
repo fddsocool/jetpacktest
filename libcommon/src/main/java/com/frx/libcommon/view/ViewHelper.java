@@ -18,7 +18,9 @@ public class ViewHelper {
     public static final int RADIUS_BOTTOM = 4;
 
     public static void setViewOutLine(View view, AttributeSet attributes, int defStyleAttr, int defStyleRes) {
-        TypedArray array = view.getContext().obtainStyledAttributes(attributes, R.styleable.viewOutLineStrategy, defStyleAttr, defStyleRes);
+        TypedArray array = view.getContext().obtainStyledAttributes(attributes, R.styleable.viewOutLineStrategy,
+                                                                    defStyleAttr, defStyleRes
+        );
         int radius = array.getDimensionPixelSize(R.styleable.viewOutLineStrategy_clip_radius, 0);
         int hideSide = array.getInt(R.styleable.viewOutLineStrategy_clip_side, 0);
         array.recycle();
@@ -31,7 +33,7 @@ public class ViewHelper {
             public void getOutline(View view, Outline outline) {
                 int w = view.getWidth();
                 int h = view.getHeight();
-                if (w == 0 || h == 0) {
+                if (w <= 0 || h <= 0) {
                     return;
                 }
 
@@ -64,6 +66,4 @@ public class ViewHelper {
         view.setClipToOutline(radius > 0);
         view.invalidate();
     }
-
-
 }

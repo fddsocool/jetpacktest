@@ -57,7 +57,7 @@ public abstract class Request<T, R extends Request> implements Cloneable {
         return (R) this;
     }
 
-    public R addParams(String key, Object value) {
+    public R addParam(String key, Object value) {
         if (value == null) {
             return (R) this;
         }

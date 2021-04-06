@@ -13,6 +13,8 @@ import androidx.fragment.app.Fragment;
 
 import com.elvishew.xlog.XLog;
 import com.frx.jetpro.R;
+import com.frx.jetpro.model.User;
+import com.frx.jetpro.ui.login.UserManager;
 import com.frx.libnavannotation.FragmentDestination;
 
 @FragmentDestination(pageUrl = "main/tabs/my", needLogin = true)
@@ -22,7 +24,12 @@ public class MyFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_my, container, false);
         final TextView textView = root.findViewById(R.id.text_my);
+        final TextView textName = root.findViewById(R.id.text_name);
         textView.setText("my");
+
+        User user = UserManager.get().getUser();
+        textName.setText(user.name + "");
+
         return root;
     }
 

@@ -1,6 +1,5 @@
 package com.frx.jetpro.ui;
 
-import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,7 +17,6 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.elvishew.xlog.XLog;
 import com.frx.jetpro.R;
 import com.frx.jetpro.databinding.LayoutRefreshViewBinding;
 import com.frx.libcommon.view.EmptyView;
@@ -30,7 +28,9 @@ import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
-public abstract class AbsListFragment<T, M extends AbsViewModel<T>, VH extends RecyclerView.ViewHolder> extends Fragment implements OnRefreshListener, OnLoadMoreListener {
+public abstract class AbsListFragment<T, M extends AbsViewModel<T>,
+        VH extends RecyclerView.ViewHolder> extends Fragment implements OnRefreshListener,
+        OnLoadMoreListener {
 
     protected LayoutRefreshViewBinding mBinding;
     protected RecyclerView mRecyclerView;
@@ -42,8 +42,10 @@ public abstract class AbsListFragment<T, M extends AbsViewModel<T>, VH extends R
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
 
+        //LayoutRefreshViewBinding 对应布局 layout_refresh_view
         mBinding = LayoutRefreshViewBinding.inflate(inflater, container, false);
         mBinding.getRoot().setFitsSystemWindows(true);
 
@@ -58,12 +60,14 @@ public abstract class AbsListFragment<T, M extends AbsViewModel<T>, VH extends R
 
         mAdapter = getAdapter();
         mRecyclerView.setAdapter(mAdapter);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+        mRecyclerView.setLayoutManager(
+                new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         mRecyclerView.setItemAnimator(null);
 
         //默认给列表中的Item 一个 10dp的ItemDecoration
         mItemDecoration = new DividerItemDecoration(getContext(), LinearLayoutManager.VERTICAL);
-        mItemDecoration.setDrawable(ContextCompat.getDrawable(getContext(), R.drawable.list_divider));
+        mItemDecoration.setDrawable(
+                ContextCompat.getDrawable(getContext(), R.drawable.list_divider));
         mRecyclerView.addItemDecoration(mItemDecoration);
 
         afterCreateView();
@@ -92,12 +96,13 @@ public abstract class AbsListFragment<T, M extends AbsViewModel<T>, VH extends R
 
             //触发边界回调
             //监听分页时有无更多数据,以决定是否关闭上拉加载的动画
-            mViewModel.getBoundaryPageData().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
-                @Override
-                public void onChanged(Boolean hasData) {
-                    finishRefresh(hasData);
-                }
-            });
+            mViewModel.getBoundaryPageData().observe(getViewLifecycleOwner(),
+                                                     new Observer<Boolean>() {
+                                                         @Override
+                                                         public void onChanged(Boolean hasData) {
+                                                             finishRefresh(hasData);
+                                                         }
+                                                     });
         }
 
         afterViewCreated();

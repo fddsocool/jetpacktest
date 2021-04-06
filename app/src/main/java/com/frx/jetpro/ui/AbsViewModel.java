@@ -19,8 +19,7 @@ public abstract class AbsViewModel<T> extends ViewModel {
                 //分页量
                 .setPageSize(10)
                 //初始加载量
-                .setInitialLoadSizeHint(12)
-                .build();
+                .setInitialLoadSizeHint(12).build();
 
         mPageData = new LivePagedListBuilder<>(mFactory, mConfig)
                 .setInitialLoadKey(0)

@@ -7,6 +7,9 @@ import android.widget.LinearLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+/**
+ * 圆角 LinearLayout
+ */
 public class CornerLinearLayout extends LinearLayout {
     public CornerLinearLayout(@NonNull Context context) {
         this(context, null);

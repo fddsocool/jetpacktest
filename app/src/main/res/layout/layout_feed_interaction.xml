@@ -9,12 +9,15 @@
             name="feed"
             type="Feed" />
 
+        <variable
+            name="owner"
+            type="androidx.lifecycle.LifecycleOwner" />
+
         <import type="com.frx.jetpro.model.Feed" />
 
         <import type="com.frx.jetpro.utils.StringConvert" />
 
-        <import type="android.content.Context" />
-
+        <import type="com.frx.jetpro.ui.InteractionPresenter" />
     </data>
 
     <LinearLayout
@@ -24,12 +27,12 @@
         android:paddingLeft="@dimen/dp_16"
         android:paddingRight="@dimen/dp_16">
 
-
         <com.google.android.material.button.MaterialButton
             android:id="@+id/like"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:onClick="@{()->InteractionPresenter.toggleFeedLike(owner,feed)}"
             android:text="@{feed.ugc.likeCount>0?StringConvert.convertFeedUgc(feed.ugc.likeCount):@string/like}"
             android:textColor="@{feed.ugc.hasLiked?@color/color_theme:@color/color_3d3}"
             android:textSize="@dimen/sp_14"
@@ -44,12 +47,12 @@
             tools:text="1000"
             tools:textColor="@color/color_3d3" />
 
-
         <com.google.android.material.button.MaterialButton
             android:id="@+id/diss"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:onClick="@{()->InteractionPresenter.toggleFeedDiss(owner,feed)}"
             android:text="踩"
             android:textColor="@{feed.ugc.hasdiss?@color/color_theme:@color/color_3d3}"
             android:textSize="@dimen/sp_14"
@@ -63,7 +66,6 @@
             tools:iconTint="@color/color_3d3"
             tools:text="1000"
             tools:textColor="@color/color_3d3" />
-
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/comment"
@@ -84,12 +86,12 @@
             tools:text="1000"
             tools:textColor="@color/color_3d3" />
 
-
         <com.google.android.material.button.MaterialButton
             android:id="@+id/share"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:onClick="@{()->InteractionPresenter.openShare(context,feed)}"
             android:text="@{feed.ugc.shareCount>0?StringConvert.convertFeedUgc(feed.ugc.shareCount):@string/share}"
             android:textColor="@color/color_3d3"
             android:textSize="@dimen/sp_14"

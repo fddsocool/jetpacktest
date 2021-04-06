@@ -7,6 +7,9 @@ import android.widget.FrameLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+/**
+ * 圆角 FrameLayout
+ */
 public class CornerFrameLayout extends FrameLayout {
     public CornerFrameLayout(@NonNull Context context) {
         this(context, null);
@@ -20,7 +23,8 @@ public class CornerFrameLayout extends FrameLayout {
         this(context, attrs, defStyleAttr, 0);
     }
 
-    public CornerFrameLayout(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+    public CornerFrameLayout(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr,
+                             int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         ViewHelper.setViewOutLine(this, attrs, defStyleAttr, defStyleRes);
     }

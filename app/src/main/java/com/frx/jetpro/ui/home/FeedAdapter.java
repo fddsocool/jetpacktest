@@ -44,13 +44,13 @@ public class FeedAdapter extends PagedListAdapter<Feed, FeedAdapter.FeedViewHold
     @Override
     public int getItemViewType(int position) {
         Feed feed = getItem(position);
-//        if (feed.itemType == Feed.TYPE_IMAGE_TEXT) {
-//            return R.layout.layout_feed_type_image;
-//        } else if (feed.itemType == Feed.TYPE_VIDEO) {
-//            return R.layout.layout_feed_type_video;
-//        } else {
-//            throw new IllegalArgumentException("无此类型布局：feed.itemType=>" + feed.itemType);
-//        }
+        //if (feed.itemType == Feed.TYPE_IMAGE_TEXT) {
+        //    return R.layout.layout_feed_type_image;
+        //} else if (feed.itemType == Feed.TYPE_VIDEO) {
+        //    return R.layout.layout_feed_type_video;
+        //} else {
+        //    throw new IllegalArgumentException("无此类型布局：feed.itemType=>" + feed.itemType);
+        //}
 
         return feed.itemType;
     }
@@ -58,8 +58,9 @@ public class FeedAdapter extends PagedListAdapter<Feed, FeedAdapter.FeedViewHold
     @NonNull
     @Override
     public FeedViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-//        ViewDataBinding binding = DataBindingUtil.inflate(mInflater, viewType, parent, false);
-//        return new ViewHolder(binding);
+        //ViewDataBinding binding = DataBindingUtil.inflate(mInflater, viewType, parent,
+        //false);
+        //return new ViewHolder(binding);
         ViewDataBinding binding;
         if (viewType == Feed.TYPE_IMAGE_TEXT) {
             binding = LayoutFeedTypeImageBinding.inflate(mInflater);
@@ -92,13 +93,12 @@ public class FeedAdapter extends PagedListAdapter<Feed, FeedAdapter.FeedViewHold
             if (mBinding instanceof LayoutFeedTypeImageBinding) {
                 LayoutFeedTypeImageBinding imageBinding = (LayoutFeedTypeImageBinding) mBinding;
                 imageBinding.setFeed(item);
-                imageBinding.feedImage.bindData(item.width, item.height, 16,
-                        item.cover);
+                imageBinding.feedImage.bindData(item.width, item.height, 16, item.cover);
             } else if (mBinding instanceof LayoutFeedTypeVideoBinding) {
                 LayoutFeedTypeVideoBinding videoBinding = (LayoutFeedTypeVideoBinding) mBinding;
                 videoBinding.setFeed(item);
-                videoBinding.listPlayerView.bindData(category, item.width, item.height,
-                        item.cover, item.url);
+                videoBinding.listPlayerView.bindData(category, item.width, item.height, item.cover,
+                                                     item.url);
             }
         }
     }

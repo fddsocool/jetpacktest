@@ -8,15 +8,18 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
 
+import com.frx.jetpro.model.Destination;
+import com.frx.jetpro.ui.login.UserManager;
+import com.frx.jetpro.utils.AppConfig;
 import com.frx.jetpro.utils.NavGraphBuilder;
 import com.frx.jetpro.view.AppBottomBar;
 import com.frx.libcommon.utils.StatusBar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 
@@ -61,9 +64,37 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
     }
 
+    /**
+     * 选择底部导航菜单中的项目时调用
+     *
+     * @param item MenuItem
+     * @return boolean
+     */
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
+        //登录拦截，查找destination.json文件，判断needLogin字段
+        HashMap<String, Destination> destConfig = AppConfig.getDestConfig();
+        for (Map.Entry<String, Destination> stringDestinationEntry : destConfig.entrySet()) {
+            Destination destination = stringDestinationEntry.getValue();
+            if (destination == null) {
+                return false;
+            }
+
+            if (!UserManager.get().isLogin() && destination.isNeedLogin() && destination.getId() == item.getItemId()) {
+                //用户未登录 && 页面需要登录 && 页面id相等
+                //去登陆
+                UserManager.get().login(this).observe(this, user -> {
+                    if (user != null) {
+                        //登录成功后跳转页面
+                        navView.setSelectedItemId(item.getItemId());
+                    }
+                });
+                return false;
+            }
+        }
+
         navController.navigate(item.getItemId());
-        return TextUtils.isEmpty(item.getTitle());
+        return !TextUtils.isEmpty(item.getTitle());
     }
 }

@@ -29,7 +29,7 @@ public class User implements Serializable {
      */
 
     public int id;
-    public long userId;
+    public String userId;
     public String name;
     public String avatar;
     public String description;
@@ -54,12 +54,13 @@ public class User implements Serializable {
         User newUser = (User) obj;
         return TextUtils.equals(name, newUser.name)
                 && TextUtils.equals(avatar, newUser.avatar)
+                && TextUtils.equals(userId, newUser.userId)
                 && TextUtils.equals(description, newUser.description)
                 && likeCount == newUser.likeCount
                 && topCommentCount == newUser.topCommentCount
                 && followCount == newUser.followCount
                 && followerCount == newUser.followerCount
-                && qqOpenId == newUser.qqOpenId
+                && qqOpenId.equals(newUser.qqOpenId)
                 && expires_time == newUser.expires_time
                 && score == newUser.score
                 && historyCount == newUser.historyCount
@@ -67,13 +68,5 @@ public class User implements Serializable {
                 && favoriteCount == newUser.favoriteCount
                 && feedCount == newUser.feedCount
                 && hasFollow == newUser.hasFollow;
-    }
-
-    public boolean isHasFollow() {
-        return hasFollow;
-    }
-
-    public void setHasFollow(boolean hasFollow) {
-        this.hasFollow = hasFollow;
     }
 }
