@@ -2,6 +2,7 @@ package com.frx.jetpro.ui.home;
 
 import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.frx.jetpro.databinding.LayoutFeedTypeImageBinding;
 import com.frx.jetpro.databinding.LayoutFeedTypeVideoBinding;
 import com.frx.jetpro.model.Feed;
+import com.frx.jetpro.view.ListPlayerView;
 
 public class FeedAdapter extends PagedListAdapter<Feed, FeedAdapter.FeedViewHolder> {
 
@@ -77,12 +79,24 @@ public class FeedAdapter extends PagedListAdapter<Feed, FeedAdapter.FeedViewHold
         Feed item = getItem(position);
 
         holder.bindData(item, mCategory);
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onStartFeedDetailActivity(item);
+            }
+        });
+    }
+
+    public void onStartFeedDetailActivity(Feed feed) {
+
     }
 
     public static class FeedViewHolder extends RecyclerView.ViewHolder {
 
         @NonNull
         private final ViewDataBinding mBinding;
+        public ListPlayerView listPlayerView;
 
         public FeedViewHolder(@NonNull ViewDataBinding binding) {
             super(binding.getRoot());
@@ -97,9 +111,19 @@ public class FeedAdapter extends PagedListAdapter<Feed, FeedAdapter.FeedViewHold
             } else if (mBinding instanceof LayoutFeedTypeVideoBinding) {
                 LayoutFeedTypeVideoBinding videoBinding = (LayoutFeedTypeVideoBinding) mBinding;
                 videoBinding.setFeed(item);
-                videoBinding.listPlayerView.bindData(category, item.width, item.height, item.cover,
-                                                     item.url);
+
+                listPlayerView = videoBinding.listPlayerView;
+                listPlayerView.bindData(category, item.width, item.height, item.cover,
+                        item.url);
             }
+        }
+
+        public boolean isVideoItem() {
+            return mBinding instanceof LayoutFeedTypeVideoBinding;
+        }
+
+        public ListPlayerView getListPlayerView() {
+            return listPlayerView;
         }
     }
 }
