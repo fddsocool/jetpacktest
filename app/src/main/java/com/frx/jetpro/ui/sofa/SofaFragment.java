@@ -25,40 +25,4 @@ public class SofaFragment extends Fragment {
         textView.setText("sofa");
         return root;
     }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        XLog.i("onViewCreated");
-    }
-
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-        XLog.i("onAttach");
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        XLog.i("onResume");
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        XLog.i("onDetach");
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        XLog.i("onDestroyView");
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        XLog.i("onDestroy");
-    }
 }
