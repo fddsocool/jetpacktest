@@ -36,12 +36,6 @@ android {
 }
 
 dependencies {
-
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
-
-    implementation 'androidx.navigation:navigation-fragment:2.3.4'
-    implementation 'androidx.navigation:navigation-ui:2.3.4'
-
     //基础库
     implementation project(":libcommon")
 

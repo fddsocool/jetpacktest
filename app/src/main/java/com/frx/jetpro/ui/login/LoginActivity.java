@@ -9,8 +9,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.arch.core.executor.ArchTaskExecutor;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import com.frx.jetpro.R;
 import com.frx.jetpro.databinding.ActivityLayoutLoginBinding;
 import com.frx.jetpro.model.User;
+import com.frx.libcommon.utils.StatusBar;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -19,6 +21,8 @@ public class LoginActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        setTheme(R.style.AppTheme);
+        StatusBar.fitSystemBar(this);
         super.onCreate(savedInstanceState);
         mBinding = ActivityLayoutLoginBinding.inflate(getLayoutInflater());
         mLayout = mBinding.getRoot();

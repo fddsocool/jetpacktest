@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        //由于 启动时设置了 R.style.launcher 的windowBackground属性
+        //由于启动时设置了R.style.launcher的windowBackground属性
         //势必要在进入主页后,把窗口背景清理掉
         setTheme(R.style.AppTheme);
         //启用沉浸式布局，白底黑字
