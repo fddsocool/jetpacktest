@@ -1,5 +1,8 @@
 package com.frx.jetpro.ui.home;
 
+import android.os.Bundle;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.Lifecycle;
@@ -10,8 +13,8 @@ import androidx.paging.ItemKeyedDataSource;
 import androidx.paging.PagedList;
 import androidx.paging.PagedListAdapter;
 
-import com.elvishew.xlog.XLog;
 import com.frx.jetpro.exoplayer.PageListPlayDetector;
+import com.frx.jetpro.exoplayer.PageListPlayManager;
 import com.frx.jetpro.model.Feed;
 import com.frx.jetpro.ui.AbsListFragment;
 import com.frx.jetpro.ui.MutableDataSource;
@@ -28,6 +31,14 @@ public class HomeFragment extends AbsListFragment<Feed, HomeViewModel, FeedAdapt
     private boolean shouldPause = true;
 
     private String feedType;
+
+    public static HomeFragment newInstance(String feedType) {
+        Bundle args = new Bundle();
+        args.putString("feedType", feedType);
+        HomeFragment fragment = new HomeFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     @Override
     protected void afterCreateView() {
@@ -51,15 +62,12 @@ public class HomeFragment extends AbsListFragment<Feed, HomeViewModel, FeedAdapt
             @Override
             public void onStateChanged(@NonNull LifecycleOwner source, @NonNull Lifecycle.Event event) {
                 if (event == Lifecycle.Event.ON_PAUSE) {
-                    XLog.i("Lifecycle.Event.ON_PAUSE");
                     // 如果是跳转到详情页,咱们就不需要暂停视频播放了
                     // 如果是前后台切换或者去别的页面了都是需要暂停视频播放的
                     if (shouldPause) {
                         pageListPlayDetector.onPause();
                     }
                 } else if (event == Lifecycle.Event.ON_RESUME) {
-                    XLog.i("Lifecycle.Event.ON_RESUME feedType:" + feedType);
-
                     shouldPause = true;
                     // 由于沙发Tab的几个子页面复用了HomeFragment，我们需要判断下当前页面它是否有ParentFragment.
                     // 当且仅当它和它的ParentFragment均可见的时候，才能恢复视频播放
@@ -79,9 +87,10 @@ public class HomeFragment extends AbsListFragment<Feed, HomeViewModel, FeedAdapt
 
     @Override
     public PagedListAdapter<Feed, FeedAdapter.FeedViewHolder> getAdapter() {
-        String feedType = getArguments() == null
-                          ? "all"
-                          : getArguments().getString("feedType");
+        feedType = getArguments() == null
+                   ? "all"
+                   : getArguments().getString("feedType");
+        Toast.makeText(getContext(), "请求feedType：" + feedType, Toast.LENGTH_SHORT).show();
         return new FeedAdapter(getContext(), feedType) {
             @Override
             public void onViewAttachedToWindow(@NonNull FeedViewHolder holder) {
@@ -126,10 +135,18 @@ public class HomeFragment extends AbsListFragment<Feed, HomeViewModel, FeedAdapt
         }
 
         Feed feed = currentList.get(mAdapter.getItemCount() - 1);
+        if (feed == null) {
+            return;
+        }
+
         mViewModel.loadAfter(feed.id, new ItemKeyedDataSource.LoadCallback<Feed>() {
             @Override
             public void onResult(@NonNull List<Feed> data) {
-                if (data == null && data.isEmpty()) {
+                if (data.size() > 0) {
+                    return;
+                }
+
+                if (mAdapter.getCurrentList() == null) {
                     return;
                 }
 
@@ -150,4 +167,54 @@ public class HomeFragment extends AbsListFragment<Feed, HomeViewModel, FeedAdapt
         mViewModel.getDataSource().invalidate();
     }
 
+    /**
+     * 通过tab切换时会走onHiddenChanged而不是onPause方法，所以要在这里控制切换时视频的播放状态
+     *
+     * @param hidden boolean
+     */
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (hidden) {
+            pageListPlayDetector.onPause();
+        } else {
+            pageListPlayDetector.onResume();
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        //如果是前后台切换或者去别的页面了都是需要暂停视频播放的
+        if (shouldPause) {
+            pageListPlayDetector.onPause();
+        }
+        super.onPause();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        shouldPause = true;
+        //由于沙发Tab的几个子页面复用了HomeFragment
+        //需要判断下当前页面它是否有ParentFragment
+        if (getParentFragment() != null) {
+            //getParentFragment() != null说明当前fragment被嵌套，需要双重判断
+            //当且仅当它和它的ParentFragment均可见的时候，才能恢复视频播放
+            if (getParentFragment().isVisible() && isVisible()) {
+                pageListPlayDetector.onResume();
+            }
+        } else {
+            //只需判断当前fragment可见的时候恢复视频播放
+            if (isVisible()) {
+                pageListPlayDetector.onResume();
+            }
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        PageListPlayManager.release(feedType);
+        super.onDestroy();
+    }
 }
