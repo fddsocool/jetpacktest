@@ -3,10 +3,13 @@ package com.frx.jetpro.model;
 import android.text.TextUtils;
 
 import androidx.annotation.Nullable;
+import androidx.databinding.BaseObservable;
+import androidx.databinding.Bindable;
+import androidx.databinding.library.baseAdapters.BR;
 
 import java.io.Serializable;
 
-public class User implements Serializable {
+public class User extends BaseObservable implements Serializable {
 
     /**
      * id : 962
@@ -45,6 +48,16 @@ public class User implements Serializable {
     public int favoriteCount;
     public int feedCount;
     public boolean hasFollow;
+
+    @Bindable
+    public boolean isHasFollow() {
+        return hasFollow;
+    }
+
+    public void setHasFollow(boolean hasFollow) {
+        this.hasFollow = hasFollow;
+        notifyPropertyChanged(BR._all);
+    }
 
     @Override
     public boolean equals(@Nullable Object obj) {

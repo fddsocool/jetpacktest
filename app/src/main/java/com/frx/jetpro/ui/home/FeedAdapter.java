@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.frx.jetpro.databinding.LayoutFeedTypeImageBinding;
 import com.frx.jetpro.databinding.LayoutFeedTypeVideoBinding;
 import com.frx.jetpro.model.Feed;
+import com.frx.jetpro.ui.detail.FeedDetailActivity;
 import com.frx.jetpro.view.ListPlayerView;
 
 public class FeedAdapter extends PagedListAdapter<Feed, FeedAdapter.FeedViewHolder> {
@@ -83,6 +84,7 @@ public class FeedAdapter extends PagedListAdapter<Feed, FeedAdapter.FeedViewHold
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                FeedDetailActivity.startFeedDetailActivity(mContext, item, mCategory);
                 onStartFeedDetailActivity(item);
             }
         });

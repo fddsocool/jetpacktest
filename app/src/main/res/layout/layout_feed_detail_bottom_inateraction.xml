@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="feed"
+            type="com.frx.jetpro.model.Feed" />
+
+        <variable
+            name="fullscreen"
+            type="java.lang.Boolean" />
+
+        <import type="android.view.View" />
+
+        <import type="android.content.Context" />
+
+        <variable
+            name="owner"
+            type="androidx.lifecycle.LifecycleOwner" />
+
+        <import type="com.frx.jetpro.ui.InteractionPresenter" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="49dp"
+        android:layout_gravity="bottom"
+        android:background="@{fullscreen?@color/transparent:@color/color_white}"
+        android:orientation="vertical">
+
+        <View
+            android:id="@+id/div_top"
+            android:layout_width="0dp"
+            android:layout_height="1px"
+            android:background="@color/color_divider"
+            android:visibility="@{fullscreen?View.INVISIBLE:View.VISIBLE}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/input_view"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginLeft="@dimen/dp_16"
+            android:layout_marginTop="@dimen/dp_4"
+            android:layout_marginRight="@dimen/dp_16"
+            android:layout_marginBottom="@dimen/dp_4"
+            android:background="@drawable/bg_edit_view"
+            android:gravity="center_vertical"
+            android:hint="@string/feed_details_hint"
+            android:paddingStart="@dimen/dp_10"
+            android:textColor="@{fullscreen?@color/color_white:@color/color_333}"
+            android:textColorHint="@{fullscreen?@color/color_white:@color/color_333}"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/glv_6"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/div_top"
+            tools:ignore="RtlSymmetry" />
+
+        <LinearLayout
+            android:id="@+id/ll_like"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@color/transparent"
+            android:gravity="center"
+            android:onClick="@{()->InteractionPresenter.toggleFeedLike(owner,feed)}"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/ll_favorite"
+            app:layout_constraintStart_toEndOf="@+id/glv_6"
+            app:layout_constraintTop_toBottomOf="@+id/div_top">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_2"
+                android:background="@{feed.ugc.hasLiked?@drawable/icon_cell_liked:@drawable/icon_cell_like}"
+                android:backgroundTint="@{feed.ugc.hasLiked?@color/color_theme:fullscreen?@color/color_white:@color/color_666}"
+                tools:src="@drawable/icon_cell_liked">
+
+            </androidx.appcompat.widget.AppCompatImageView>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_2"
+                android:gravity="center"
+                android:text="@{feed.ugc.likeCount>0?String.valueOf(feed.ugc.likeCount):@string/like}"
+                android:textColor="@{feed.ugc.hasLiked?@color/color_theme:fullscreen?@color/color_white:@color/color_666}"
+                android:textSize="@dimen/sp_12"
+                tools:text="赞" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_favorite"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@color/transparent"
+            android:gravity="center"
+            android:onClick="@{()->InteractionPresenter.toggleFeedFavorite(owner,feed)}"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/ll_share"
+            app:layout_constraintStart_toEndOf="@+id/ll_like"
+            app:layout_constraintTop_toBottomOf="@+id/div_top">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_2"
+                android:background="@{feed.ugc.hasFavorite?@drawable/ic_collected:@drawable/ic_collect}"
+                android:backgroundTint="@{feed.ugc.hasFavorite?@color/color_theme:fullscreen?@color/color_white:@color/color_666}"
+                tools:src="@drawable/ic_collected">
+
+            </androidx.appcompat.widget.AppCompatImageView>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_2"
+                android:gravity="center"
+                android:text="@{feed.ugc.hasFavorite?@string/has_collect:@string/collect}"
+                android:textColor="@{feed.ugc.hasFavorite?@color/color_theme:fullscreen?@color/color_white:@color/color_666}"
+                android:textSize="@dimen/sp_12"
+                tools:text="收藏" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_share"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@color/transparent"
+            android:gravity="center"
+            android:onClick="@{()->InteractionPresenter.openShare(context,feed)}"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/ll_favorite"
+            app:layout_constraintTop_toBottomOf="@+id/div_top">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_2"
+                android:background="@drawable/icon_cell_share"
+                android:backgroundTint="@{fullscreen?@color/color_white:@color/color_666}"
+                tools:src="@drawable/icon_cell_share">
+
+            </androidx.appcompat.widget.AppCompatImageView>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_2"
+                android:gravity="center"
+                android:text="@string/share"
+                android:textColor="@{fullscreen?@color/color_white:@color/color_666}"
+                android:textSize="@dimen/sp_12"
+                tools:text="分享" />
+        </LinearLayout>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/glv_6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.6" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

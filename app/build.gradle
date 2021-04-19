@@ -29,10 +29,6 @@ android {
     dataBinding {
         enabled = true
     }
-
-    viewBinding {
-        enabled = true
-    }
 }
 
 dependencies {
@@ -48,4 +44,7 @@ dependencies {
     //导航注解
     implementation project(":libnavannotation")
     annotationProcessor project(":libnavcompiler")
+
+    //noinspection LifecycleAnnotationProcessorWithJava8
+    annotationProcessor 'android.arch.lifecycle:compiler:1.1.1'
 }

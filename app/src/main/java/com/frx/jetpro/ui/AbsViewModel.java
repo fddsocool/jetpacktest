@@ -38,6 +38,11 @@ public abstract class AbsViewModel<T> extends ViewModel {
         }
     };
 
+    /**
+     * ItemKeyedDataSource：如果服务器加载更多数据分页是基于之前数据最后一项item的某个值，用此实现
+     * PageKeyedDataSource：如果服务器加载更多数据分页是基于页码，用此实现
+     * @return
+     */
     public abstract DataSource<Integer, T> createDataSource();
 
     PagedList.BoundaryCallback<T> boundaryCallback = new PagedList.BoundaryCallback<T>() {

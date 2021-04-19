@@ -7,7 +7,6 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.arch.core.executor.ArchTaskExecutor;
-import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.frx.jetpro.R;
 import com.frx.jetpro.databinding.ActivityLayoutLoginBinding;
@@ -17,7 +16,6 @@ import com.frx.libcommon.utils.StatusBar;
 public class LoginActivity extends AppCompatActivity {
 
     private ActivityLayoutLoginBinding mBinding;
-    private ConstraintLayout mLayout;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -25,8 +23,7 @@ public class LoginActivity extends AppCompatActivity {
         StatusBar.fitSystemBar(this);
         super.onCreate(savedInstanceState);
         mBinding = ActivityLayoutLoginBinding.inflate(getLayoutInflater());
-        mLayout = mBinding.getRoot();
-        setContentView(mLayout);
+        setContentView(mBinding.getRoot());
 
         mBinding.actionClose.setOnClickListener(v -> {
             finish();

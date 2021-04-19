@@ -1,117 +1,124 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:fitsSystemWindows="true"
-    tools:context=".ui.login.LoginActivity">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <ImageView
-        android:id="@+id/action_close"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:padding="15dp"
-        android:src="@drawable/icon_close"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <data>
 
-    <ImageView
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_gravity="center"
-        android:layout_marginTop="100dp"
-        android:src="@mipmap/icon_jetpack"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    </data>
 
-    <TextView
-        android:id="@+id/tvUserName"
-        android:layout_width="80dp"
-        android:layout_height="0dp"
-        android:gravity="center"
-        android:text="用户名:"
-        android:textColor="@color/color_333"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="@+id/etUserName"
-        app:layout_constraintEnd_toStartOf="@+id/etUserName"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/etUserName" />
-
-    <TextView
-        android:id="@+id/tvUserPsw"
-        android:layout_width="80dp"
-        android:layout_height="0dp"
-        android:gravity="center"
-        android:text="密码:"
-        android:textColor="@color/color_333"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="@+id/etUserPsw"
-        app:layout_constraintEnd_toStartOf="@+id/etUserPsw"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/etUserPsw" />
-
-    <androidx.appcompat.widget.AppCompatEditText
-        android:id="@+id/etUserName"
-        android:layout_width="0dp"
-        android:layout_height="45dp"
-        android:layout_margin="15dp"
-        android:background="@color/color_gray"
-        android:textColor="@color/color_333"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toTopOf="@+id/chgl"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/tvUserName" />
-
-    <androidx.appcompat.widget.AppCompatEditText
-        android:id="@+id/etUserPsw"
-        android:layout_width="0dp"
-        android:layout_height="45dp"
-        android:layout_margin="15dp"
-        android:background="@color/color_gray"
-        android:textColor="@color/color_333"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/tvUserPsw"
-        app:layout_constraintTop_toBottomOf="@+id/chgl" />
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/action_login"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_45"
-        android:layout_gravity="bottom"
-        android:layout_marginLeft="@dimen/dp_30"
-        android:layout_marginRight="@dimen/dp_30"
-        android:layout_marginBottom="100dp"
-        android:gravity="center"
-        android:text="@string/login_text"
-        android:textColor="@color/color_white"
-        android:textSize="@dimen/sp_16"
-        app:backgroundTint="@color/color_theme"
-        app:cornerRadius="25dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
+        android:orientation="vertical"
+        tools:context=".ui.login.LoginActivity">
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/chgl"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.5" />
+        <ImageView
+            android:id="@+id/action_close"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:padding="15dp"
+            android:src="@drawable/icon_close"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <com.frx.libcommon.view.RotateLoading
-        android:id="@+id/loading"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_centerInParent="true"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:loading_color="@color/colorPrimary"
-        app:loading_width="5dp" />
+        <ImageView
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="100dp"
+            android:src="@mipmap/icon_jetpack"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/tvUserName"
+            android:layout_width="80dp"
+            android:layout_height="0dp"
+            android:gravity="center"
+            android:text="用户名:"
+            android:textColor="@color/color_333"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="@+id/etUserName"
+            app:layout_constraintEnd_toStartOf="@+id/etUserName"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/etUserName" />
+
+        <TextView
+            android:id="@+id/tvUserPsw"
+            android:layout_width="80dp"
+            android:layout_height="0dp"
+            android:gravity="center"
+            android:text="密码:"
+            android:textColor="@color/color_333"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="@+id/etUserPsw"
+            app:layout_constraintEnd_toStartOf="@+id/etUserPsw"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/etUserPsw" />
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/etUserName"
+            android:layout_width="0dp"
+            android:layout_height="45dp"
+            android:layout_margin="15dp"
+            android:background="@color/color_gray"
+            android:textColor="@color/color_333"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toTopOf="@+id/chgl"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/tvUserName" />
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/etUserPsw"
+            android:layout_width="0dp"
+            android:layout_height="45dp"
+            android:layout_margin="15dp"
+            android:background="@color/color_gray"
+            android:textColor="@color/color_333"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/tvUserPsw"
+            app:layout_constraintTop_toBottomOf="@+id/chgl" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/action_login"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_45"
+            android:layout_gravity="bottom"
+            android:layout_marginLeft="@dimen/dp_30"
+            android:layout_marginRight="@dimen/dp_30"
+            android:layout_marginBottom="100dp"
+            android:gravity="center"
+            android:text="@string/login_text"
+            android:textColor="@color/color_white"
+            android:textSize="@dimen/sp_16"
+            app:backgroundTint="@color/color_theme"
+            app:cornerRadius="25dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/chgl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.5" />
+
+        <com.frx.libcommon.view.RotateLoading
+            android:id="@+id/loading"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_centerInParent="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:loading_color="@color/colorPrimary"
+            app:loading_width="5dp" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

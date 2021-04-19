@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="feed"
+            type="com.frx.jetpro.model.Feed" />
+
+        <!--布局左边距-->
+        <variable
+            name="leftMargin"
+            type="java.lang.Integer" />
+
+        <!--是否全屏-->
+        <variable
+            name="fullscreen"
+            type="java.lang.Boolean" />
+
+        <import type="com.frx.jetpro.utils.TimeUtils" />
+
+        <import type="com.frx.jetpro.ui.InteractionPresenter" />
+
+        <variable
+            name="owner"
+            type="androidx.lifecycle.LifecycleOwner" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/author_info"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_50"
+        android:background="@{fullscreen?@color/transparent:@color/white}"
+        android:paddingTop="@dimen/dp_3"
+        android:paddingBottom="@dimen/dp_3">
+
+        <ImageView
+            android:id="@+id/action_close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:paddingStart="@{leftMargin}"
+            android:paddingEnd="@{leftMargin}"
+            android:src="@drawable/icon_back_black"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.frx.jetpro.view.PPImageView
+            android:id="@+id/author_avatar"
+            android:layout_width="@dimen/dp_40"
+            android:layout_height="@dimen/dp_40"
+            android:layout_marginTop="@dimen/dp_1"
+            app:image_url="@{feed.author.avatar}"
+            app:isCircle="@{true}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@+id/action_close"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@drawable/splash" />
+
+        <TextView
+            android:id="@+id/author_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="@dimen/dp_3"
+            android:text="@{feed.author.name}"
+            android:textColor="@{fullscreen?@color/white:@color/color_000}"
+            android:textSize="@dimen/sp_14"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toRightOf="@+id/author_avatar"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="神秘的jetpack" />
+
+        <TextView
+            android:id="@+id/create_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="@dimen/dp_2"
+            android:text="@{TimeUtils.calculate(feed.createTime)}"
+            android:textColor="@{fullscreen?@color/white:@color/color_000}"
+            android:textSize="@dimen/sp_12"
+            android:textStyle="normal"
+            app:layout_constraintLeft_toRightOf="@+id/author_avatar"
+            app:layout_constraintTop_toBottomOf="@+id/author_name"
+            tools:text="3天前" />
+
+        <com.google.android.material.button.MaterialButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/dp_16"
+            android:backgroundTint="@{fullscreen?@color/transparent:@color/color_theme}"
+            android:gravity="center"
+            android:onClick="@{()->InteractionPresenter.toggleFollowUser(owner,feed)}"
+            android:paddingLeft="@dimen/dp_16"
+            android:paddingTop="@dimen/dp_5"
+            android:paddingRight="@dimen/dp_16"
+            android:paddingBottom="@dimen/dp_5"
+            android:text="@{feed.author.hasFollow?@string/has_follow:@string/unfollow}"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_14"
+            app:cornerRadius="@dimen/dp_13"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:strokeColor="@{fullscreen?@color/transparent:@color/color_white}"
+            app:strokeWidth="1dp"
+            tools:text="已关注" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>
