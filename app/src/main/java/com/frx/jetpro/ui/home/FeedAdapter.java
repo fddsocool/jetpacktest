@@ -7,6 +7,8 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.ViewDataBinding;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.Observer;
 import androidx.paging.PagedListAdapter;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
@@ -14,14 +16,19 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.frx.jetpro.databinding.LayoutFeedTypeImageBinding;
 import com.frx.jetpro.databinding.LayoutFeedTypeVideoBinding;
 import com.frx.jetpro.model.Feed;
+import com.frx.jetpro.ui.InteractionPresenter;
 import com.frx.jetpro.ui.detail.FeedDetailActivity;
 import com.frx.jetpro.view.ListPlayerView;
+import com.frx.libcommon.extention.LiveDataBus;
 
 public class FeedAdapter extends PagedListAdapter<Feed, FeedAdapter.FeedViewHolder> {
 
     private final LayoutInflater mInflater;
     private final Context mContext;
     private final String mCategory;
+
+    //事件总线观察者，实现事件刷新
+    private FeedObserver feedObserver;
 
     protected FeedAdapter(Context context, String category) {
 
@@ -86,6 +93,14 @@ public class FeedAdapter extends PagedListAdapter<Feed, FeedAdapter.FeedViewHold
             public void onClick(View v) {
                 FeedDetailActivity.startFeedDetailActivity(mContext, item, mCategory);
                 onStartFeedDetailActivity(item);
+
+                //绑定事件总线观察者
+                if (feedObserver == null) {
+                    feedObserver = new FeedObserver();
+                    LiveDataBus.get().with(InteractionPresenter.DATA_FROM_INTERACTION)
+                            .observe((LifecycleOwner) mContext, feedObserver);
+                }
+                feedObserver.setFeed(item);
             }
         });
     }
@@ -126,6 +141,25 @@ public class FeedAdapter extends PagedListAdapter<Feed, FeedAdapter.FeedViewHold
 
         public ListPlayerView getListPlayerView() {
             return listPlayerView;
+        }
+    }
+
+    private static class FeedObserver implements Observer<Feed> {
+
+        private Feed feed;
+
+        public void setFeed(Feed feed) {
+            this.feed = feed;
+        }
+
+        @Override
+        public void onChanged(Feed feed) {
+            if (this.feed.id != feed.id) {
+                return;
+            }
+            this.feed.author = feed.author;
+            this.feed.ugc = feed.ugc;
+            this.feed.notifyChange();
         }
     }
 }

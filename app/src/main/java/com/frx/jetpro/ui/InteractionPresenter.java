@@ -16,12 +16,16 @@ import com.frx.jetpro.model.Feed;
 import com.frx.jetpro.model.User;
 import com.frx.jetpro.ui.login.UserManager;
 import com.frx.jetpro.ui.widget.ShareDialog;
+import com.frx.libcommon.extention.LiveDataBus;
 import com.frx.libcommon.global.AppGlobals;
 import com.frx.libnetwork.ApiResponse;
 import com.frx.libnetwork.ApiService;
 import com.frx.libnetwork.JsonCallback;
 
 public class InteractionPresenter {
+
+    //同步首页信息
+    public static final String DATA_FROM_INTERACTION = "data_from_interaction";
 
     private static final String URL_TOGGLE_FEED_LIK = "/ugc/toggleFeedLike";
 
@@ -52,6 +56,7 @@ public class InteractionPresenter {
                 if (response.body != null) {
                     boolean hasLiked = response.body.getBoolean("hasLiked");
                     feed.getUgc().setHasLiked(hasLiked);
+                    LiveDataBus.get().with(DATA_FROM_INTERACTION).postValue(feed);
                 }
             }
 
@@ -152,6 +157,7 @@ public class InteractionPresenter {
                         if (response.body != null) {
                             boolean hasFavorite = response.body.getBooleanValue("hasFavorite");
                             feed.getUgc().setHasFavorite(hasFavorite);
+                            LiveDataBus.get().with(DATA_FROM_INTERACTION).postValue(feed);
                         }
                     }
 
@@ -186,6 +192,7 @@ public class InteractionPresenter {
                         if (response.body != null) {
                             boolean hasFollow = response.body.getBooleanValue("hasLiked");
                             feed.getAuthor().setHasFollow(hasFollow);
+                            LiveDataBus.get().with(DATA_FROM_INTERACTION).postValue(feed);
                         }
                     }
 

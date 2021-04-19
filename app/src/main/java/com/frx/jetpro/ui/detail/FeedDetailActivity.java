@@ -38,6 +38,8 @@ public class FeedDetailActivity extends AppCompatActivity {
         } else {
             viewHandler = new VideoViewHandler(this);
         }
+        // todo 暂时只用ImageViewHandler，VideoViewHandler还未实现
+        viewHandler = new ImageViewHandler(this);
 
         viewHandler.bindInitData(feed);
     }

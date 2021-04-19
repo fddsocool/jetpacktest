@@ -3,10 +3,12 @@ package com.frx.jetpro.model;
 import android.text.TextUtils;
 
 import androidx.annotation.Nullable;
+import androidx.databinding.BaseObservable;
+import androidx.databinding.Bindable;
 
 import java.io.Serializable;
 
-public class Feed implements Serializable {
+public class Feed extends BaseObservable implements Serializable {
 
     public static final int TYPE_IMAGE_TEXT = 1;//图文
     public static final int TYPE_VIDEO = 2;//视频
@@ -45,6 +47,7 @@ public class Feed implements Serializable {
     public Comment topComment;
     public Ugc ugc;
 
+    @Bindable
     public Ugc getUgc() {
         if (ugc == null) {
             ugc = new Ugc();
@@ -52,14 +55,16 @@ public class Feed implements Serializable {
         return ugc;
     }
 
+    @Bindable
     public User getAuthor() {
         return author;
     }
 
     @Override
     public boolean equals(@Nullable Object obj) {
-        if (!(obj instanceof Feed))
+        if (!(obj instanceof Feed)) {
             return false;
+        }
         Feed newFeed = (Feed) obj;
         return id == newFeed.id
                 && itemId == newFeed.itemId
