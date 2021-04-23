@@ -13,7 +13,7 @@ import androidx.paging.PagedList;
 import com.alibaba.fastjson.TypeReference;
 import com.frx.jetpro.model.Feed;
 import com.frx.jetpro.ui.AbsViewModel;
-import com.frx.jetpro.ui.MutableDataSource;
+import com.frx.jetpro.ui.MutablePageKeyedDataSource;
 import com.frx.libnetwork.ApiResponse;
 import com.frx.libnetwork.ApiService;
 import com.frx.libnetwork.JsonCallback;
@@ -98,7 +98,7 @@ public class HomeViewModel extends AbsViewModel<Feed> {
                     Log.e("loadData", "onCacheSuccess");
                     //此处需要把List类型的对象转换为PagingList类型对象
                     List<Feed> body = response.body;
-                    MutableDataSource<Integer, Feed> dataSource = new MutableDataSource<>();
+                    MutablePageKeyedDataSource<Integer, Feed> dataSource = new MutablePageKeyedDataSource<>();
                     dataSource.data.addAll(body == null
                                            ? Collections.emptyList()
                                            : body);

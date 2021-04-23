@@ -80,10 +80,12 @@ public class ApiService {
     }
 
     public static <T> GetRequest<T> get(String url) {
+        XLog.e("GetRequest:" + url);
         return new GetRequest<>(sBaseUrl + url);
     }
 
     public static <T> PostRequest<T> post(String url) {
+        XLog.e("PostRequest:" + url);
         return new PostRequest<>(sBaseUrl + url);
     }
 }

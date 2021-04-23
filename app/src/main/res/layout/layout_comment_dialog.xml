@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:animateLayoutChanges="false"
+        android:background="@color/color_white">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/comment_annex_layout"
+            android:layout_width="65dp"
+            android:layout_height="65dp"
+            android:layout_marginStart="@dimen/dimen_10"
+            android:layout_marginTop="@dimen/dp_5"
+            android:layout_marginEnd="@dimen/dp_0"
+            android:layout_marginBottom="@dimen/dp_5"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@+id/div_top"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.frx.jetpro.view.PPImageView
+                android:id="@+id/comment_annex_cover"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="5dp"
+                android:scaleType="centerCrop"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/comment_annex_icon_video"
+                android:layout_width="@dimen/dimen_20"
+                android:layout_height="@dimen/dimen_20"
+                android:scaleType="fitCenter"
+                android:src="@drawable/icon_video_play"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@+id/comment_annex_cover"
+                app:layout_constraintEnd_toEndOf="@+id/comment_annex_cover"
+                app:layout_constraintStart_toStartOf="@+id/comment_annex_cover"
+                app:layout_constraintTop_toTopOf="@+id/comment_annex_cover" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/comment_annex_delete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:scaleType="fitCenter"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/icon_close"
+                app:tint="@color/color_white" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <View
+            android:id="@+id/div_top"
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/color_gray2"
+            app:layout_constraintBottom_toTopOf="@+id/input_view"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/comment_annex_layout" />
+
+        <com.frx.jetpro.view.PPEditTextView
+            android:id="@+id/input_view"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/dp_36"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/bg_edit_view"
+            android:gravity="center_vertical"
+            android:hint="@string/comment_hint"
+            android:paddingStart="@dimen/sp_10"
+            android:paddingEnd="0dp"
+            android:textColor="@color/color_333"
+            android:textColorHint="@color/color_999"
+            android:textSize="@dimen/sp_12"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/comment_video"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/div_top" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/comment_video"
+            android:layout_width="@dimen/dp_60"
+            android:layout_height="@dimen/dp_36"
+            android:layout_marginStart="@dimen/dp_5"
+            android:src="@drawable/icon_publish_video"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/comment_send"
+            app:layout_constraintStart_toEndOf="@+id/input_view"
+            app:layout_constraintTop_toBottomOf="@+id/div_top" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/comment_send"
+            android:layout_width="@dimen/dp_60"
+            android:layout_height="@dimen/dp_36"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="@dimen/dimen_10"
+            android:gravity="center"
+            android:paddingLeft="@dimen/dp_11"
+            android:paddingTop="@dimen/dp_3"
+            android:paddingRight="@dimen/dp_11"
+            android:paddingBottom="@dimen/dp_3"
+            android:text="@string/comment_send_text"
+            android:textColorHint="@color/color_white"
+            app:backgroundTint="@color/color_theme"
+            app:cornerRadius="@dimen/dp_6"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/comment_video"
+            app:layout_constraintTop_toBottomOf="@+id/div_top" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

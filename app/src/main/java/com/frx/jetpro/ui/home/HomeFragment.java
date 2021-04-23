@@ -17,7 +17,7 @@ import com.frx.jetpro.exoplayer.PageListPlayDetector;
 import com.frx.jetpro.exoplayer.PageListPlayManager;
 import com.frx.jetpro.model.Feed;
 import com.frx.jetpro.ui.AbsListFragment;
-import com.frx.jetpro.ui.MutableDataSource;
+import com.frx.jetpro.ui.MutablePageKeyedDataSource;
 import com.frx.libnavannotation.FragmentDestination;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 
@@ -150,7 +150,7 @@ public class HomeFragment extends AbsListFragment<Feed, HomeViewModel, FeedAdapt
                     return;
                 }
 
-                MutableDataSource<Integer, Feed> dataSource = new MutableDataSource<>();
+                MutablePageKeyedDataSource<Integer, Feed> dataSource = new MutablePageKeyedDataSource<>();
                 dataSource.data.addAll(data);
 
                 PagedList.Config config = mAdapter.getCurrentList().getConfig();

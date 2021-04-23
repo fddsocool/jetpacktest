@@ -1,5 +1,6 @@
 package com.frx.jetpro.ui.detail;
 
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.CallSuper;
@@ -37,6 +38,8 @@ public abstract class ViewHandler {
 
     private EmptyView mEmptyView;
 
+    private CommentDialog commentDialog;
+
     public ViewHandler(FragmentActivity activity) {
         this.activity = activity;
         feedDetailViewModel = new ViewModelProvider(this.activity,
@@ -69,6 +72,25 @@ public abstract class ViewHandler {
                 handleEmpty(comments.size() > 0);
             }
         });
+
+        //弹出评论对话框
+        feedDetailBottomInateractionBinding.inputView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showCommentDialog();
+            }
+        });
+    }
+
+    private void showCommentDialog() {
+        if (commentDialog == null) {
+            commentDialog = CommentDialog.newInstance(feed.itemId);
+        }
+        commentDialog.setCommentAddListener(comment -> {
+            handleEmpty(true);
+            listAdapter.addAndRefreshList(comment);
+        });
+        commentDialog.show(activity.getSupportFragmentManager(), "comment_dialog");
     }
 
     public void handleEmpty(boolean hasData) {

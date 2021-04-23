@@ -5,9 +5,11 @@ import android.content.Context;
 import android.text.TextUtils;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.arch.core.executor.ArchTaskExecutor;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 
 import com.alibaba.fastjson.JSONObject;
@@ -193,6 +195,76 @@ public class InteractionPresenter {
                             boolean hasFollow = response.body.getBooleanValue("hasLiked");
                             feed.getAuthor().setHasFollow(hasFollow);
                             LiveDataBus.get().with(DATA_FROM_INTERACTION).postValue(feed);
+                        }
+                    }
+
+                    @Override
+                    public void onError(ApiResponse<JSONObject> response) {
+                        showToast(response.message);
+                    }
+                });
+    }
+
+    /**
+     * 删除一条评论
+     *
+     * @param context Context
+     * @param itemId  long
+     * @return LiveData
+     */
+    public static LiveData<Boolean> deleteFeed(Context context, long itemId) {
+        MutableLiveData<Boolean> liveData = new MutableLiveData<>();
+        new AlertDialog.Builder(context)
+                .setNegativeButton("删除", (dialog, which) -> {
+                    dialog.dismiss();
+                    deleteFeedInternal(liveData, itemId);
+                }).setPositiveButton("取消", (dialog, which) -> dialog.dismiss()).setMessage("确定要删除这条评论吗？").create().show();
+        return liveData;
+    }
+
+    private static void deleteFeedInternal(MutableLiveData<Boolean> liveData, long itemId) {
+        ApiService.get("/feeds/deleteFeed")
+                .addParam("itemId", itemId)
+                .execute(new JsonCallback<JSONObject>() {
+                    @Override
+                    public void onSuccess(ApiResponse<JSONObject> response) {
+                        if (response.body != null) {
+                            boolean success = response.body.getBoolean("result");
+                            liveData.postValue(success);
+                            showToast("删除成功");
+                        }
+                    }
+
+                    @Override
+                    public void onError(ApiResponse<JSONObject> response) {
+                        showToast(response.message);
+                    }
+                });
+    }
+
+    //删除某个帖子的一个评论
+    public static LiveData<Boolean> deleteFeedComment(Context context, long itemId, long commentId) {
+        MutableLiveData<Boolean> liveData = new MutableLiveData<>();
+        new AlertDialog.Builder(context)
+                .setNegativeButton("删除", (dialog, which) -> {
+                    dialog.dismiss();
+                    deleteFeedCommentInternal(liveData, itemId, commentId);
+                }).setPositiveButton("取消", (dialog, which) -> dialog.dismiss()).setMessage("确定要删除这条评论吗？").create().show();
+        return liveData;
+    }
+
+    private static void deleteFeedCommentInternal(LiveData liveData, long itemId, long commentId) {
+        ApiService.get("/comment/deleteComment")
+                .addParam("userId", UserManager.get().getUserId())
+                .addParam("commentId", commentId)
+                .addParam("itemId", itemId)
+                .execute(new JsonCallback<JSONObject>() {
+                    @Override
+                    public void onSuccess(ApiResponse<JSONObject> response) {
+                        if (response.body != null) {
+                            boolean result = response.body.getBooleanValue("result");
+                            ((MutableLiveData) liveData).postValue(result);
+                            showToast("评论删除成功");
                         }
                     }
 

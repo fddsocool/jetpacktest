@@ -7,11 +7,17 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.Observer;
+import androidx.paging.ItemKeyedDataSource;
+import androidx.paging.PagedList;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.frx.jetpro.databinding.LayoutFeedCommentListItemBinding;
 import com.frx.jetpro.model.Comment;
+import com.frx.jetpro.ui.InteractionPresenter;
+import com.frx.jetpro.ui.MutableItemKeyedDataSource;
 import com.frx.jetpro.ui.login.UserManager;
 import com.frx.libcommon.extention.AbsPagedListAdapter;
 import com.frx.libcommon.utils.PixUtils;
@@ -49,6 +55,61 @@ public class FeedCommentAdapter extends AbsPagedListAdapter<Comment, FeedComment
         Comment item = getItem(position);
         //绑定数据
         holder.bindData(item);
+
+        holder.feedCommentListItemBinding.commentDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                InteractionPresenter.deleteFeedComment(mContext, item.id, item.commentId)
+                        .observe((LifecycleOwner) mContext, new Observer<Boolean>() {
+                            @Override
+                            public void onChanged(Boolean success) {
+                                if (success) {
+                                    deleteAndRefreshList(item);
+                                }
+                            }
+                        });
+            }
+        });
+    }
+
+    public void addAndRefreshList(Comment comment) {
+        //获取原对象
+        PagedList<Comment> currentList = getCurrentList();
+        //创建一个MutableItemKeyedDataSource
+        MutableItemKeyedDataSource<Integer, Comment> newDataSource =
+                new MutableItemKeyedDataSource<Integer, Comment>((ItemKeyedDataSource) currentList.getDataSource()) {
+                    @NonNull
+                    @Override
+                    public Integer getKey(@NonNull Comment item) {
+                        return item.id;
+                    }
+                };
+        newDataSource.data.add(comment);
+        newDataSource.data.addAll(currentList);
+        PagedList<Comment> newList = newDataSource.buildNewPagedList(currentList.getConfig());
+        //设置要显示的新列表
+        submitList(newList);
+    }
+
+    public void deleteAndRefreshList(Comment comment) {
+        //获取原对象
+        PagedList<Comment> currentList = getCurrentList();
+        //创建一个MutableItemKeyedDataSource
+        MutableItemKeyedDataSource<Integer, Comment> newDataSource =
+                new MutableItemKeyedDataSource<Integer, Comment>((ItemKeyedDataSource) currentList.getDataSource()) {
+                    @NonNull
+                    @Override
+                    public Integer getKey(@NonNull Comment item) {
+                        return item.id;
+                    }
+                };
+        for (Comment item : currentList) {
+            if (comment != item) {
+                newDataSource.data.add(item);
+            }
+        }
+        PagedList<Comment> newList = newDataSource.buildNewPagedList(getCurrentList().getConfig());
+        submitList(newList);
     }
 
     public static class FeedCommentViewHolder extends RecyclerView.ViewHolder {
