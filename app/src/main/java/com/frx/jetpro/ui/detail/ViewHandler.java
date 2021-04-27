@@ -1,5 +1,6 @@
 package com.frx.jetpro.ui.detail;
 
+import android.content.Intent;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -107,6 +108,12 @@ public abstract class ViewHandler {
                 mEmptyView.setTitle(activity.getString(R.string.feed_comment_empty));
             }
             listAdapter.addHeaderView(mEmptyView);
+        }
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (commentDialog != null && commentDialog.isAdded()) {
+            commentDialog.onActivityResult(requestCode, resultCode, data);
         }
     }
 }

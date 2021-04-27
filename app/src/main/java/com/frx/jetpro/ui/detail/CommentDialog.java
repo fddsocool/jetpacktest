@@ -1,7 +1,9 @@
 package com.frx.jetpro.ui.detail;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -20,17 +22,22 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDialogFragment;
 import androidx.arch.core.executor.ArchTaskExecutor;
+import androidx.lifecycle.Observer;
 
 import com.frx.jetpro.databinding.LayoutCommentDialogBinding;
 import com.frx.jetpro.model.Comment;
 import com.frx.jetpro.ui.login.UserManager;
+import com.frx.jetpro.ui.publish.CaptureActivity;
 import com.frx.libcommon.global.AppGlobals;
+import com.frx.libcommon.utils.FileUtils;
 import com.frx.libcommon.utils.PixUtils;
 import com.frx.libcommon.view.LoadingDialog;
 import com.frx.libcommon.view.ViewHelper;
 import com.frx.libnetwork.ApiResponse;
 import com.frx.libnetwork.ApiService;
 import com.frx.libnetwork.JsonCallback;
+
+import java.util.concurrent.atomic.AtomicInteger;
 
 @SuppressLint("RestrictedApi")
 public class CommentDialog extends AppCompatDialogFragment {
@@ -39,6 +46,8 @@ public class CommentDialog extends AppCompatDialogFragment {
 
     private LayoutCommentDialogBinding commentDialogBinding;
 
+    private String filePath;
+    private int width, height;
     private boolean isVideo;
     private long itemId;
 
@@ -81,7 +90,7 @@ public class CommentDialog extends AppCompatDialogFragment {
         commentDialogBinding.commentVideo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                CaptureActivity.startActivity(getActivity());
             }
         });
 
@@ -95,7 +104,15 @@ public class CommentDialog extends AppCompatDialogFragment {
         commentDialogBinding.commentAnnexDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                filePath = null;
+                isVideo = false;
+                width = 0;
+                height = 0;
+                commentDialogBinding.commentAnnexCover.setImageDrawable(null);
+                commentDialogBinding.commentAnnexLayout.setVisibility(View.GONE);
 
+                commentDialogBinding.commentVideo.setEnabled(true);
+                commentDialogBinding.commentVideo.setAlpha(255);
             }
         });
 
@@ -211,6 +228,27 @@ public class CommentDialog extends AppCompatDialogFragment {
             } else if (loadingDialog.isShowing()) {
                 loadingDialog.dismiss();
             }
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == CaptureActivity.REQ_CAPTURE && resultCode == Activity.RESULT_OK && data != null) {
+            filePath = data.getStringExtra(CaptureActivity.RESULT_FILE_PATH);
+            width = data.getIntExtra(CaptureActivity.RESULT_FILE_WIDTH, 0);
+            height = data.getIntExtra(CaptureActivity.RESULT_FILE_HEIGHT, 0);
+            isVideo = data.getBooleanExtra(CaptureActivity.RESULT_FILE_TYPE, false);
+
+            if (!TextUtils.isEmpty(filePath)) {
+                commentDialogBinding.commentAnnexLayout.setVisibility(View.VISIBLE);
+                commentDialogBinding.commentAnnexCover.setImageUrl(filePath);
+                if (isVideo) {
+                    commentDialogBinding.commentAnnexIconVideo.setVisibility(View.VISIBLE);
+                }
+            }
+            commentDialogBinding.commentVideo.setEnabled(false);
+            commentDialogBinding.commentVideo.setAlpha(80);
         }
     }
 }

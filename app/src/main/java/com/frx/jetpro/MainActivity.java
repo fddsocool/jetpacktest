@@ -1,5 +1,6 @@
 package com.frx.jetpro;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.MenuItem;
@@ -12,6 +13,7 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.frx.jetpro.model.Destination;
 import com.frx.jetpro.ui.login.UserManager;
+import com.frx.jetpro.ui.publish.CaptureActivity;
 import com.frx.jetpro.utils.AppConfig;
 import com.frx.jetpro.utils.NavGraphBuilder;
 import com.frx.jetpro.view.AppBottomBar;

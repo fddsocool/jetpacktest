@@ -67,10 +67,21 @@ dependencies {
     //room 数据库
     api 'android.arch.persistence.room:runtime:1.1.1'
     api 'android.arch.lifecycle:extensions:1.1.1'
-    
+
     //room注释处理器，包内需要配置
     annotationProcessor 'android.arch.persistence.room:compiler:1.1.1'
 
     //noinspection LifecycleAnnotationProcessorWithJava8
     annotationProcessor 'android.arch.lifecycle:compiler:1.1.1'
+
+    //camera
+    api 'androidx.camera:camera-core:1.1.0-alpha03'
+    api 'androidx.camera:camera-camera2:1.1.0-alpha03'
+    api 'androidx.camera:camera-lifecycle:1.1.0-alpha03'
+    api 'androidx.camera:camera-view:1.0.0-alpha23'
+    api 'androidx.camera:camera-extensions:1.0.0-alpha23'
+
+    //gesture imageview
+    api 'com.github.chrisbanes:PhotoView:2.3.0'
+
 }
